@@ -1,17 +1,19 @@
 package deedictionaryapplication.Controllers;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Translate;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -20,18 +22,27 @@ import java.util.ResourceBundle;
 
 public class HomeGui implements Initializable {
     @FXML
+    private Button minimizeBtn, closeBtn, BtnBurger;
+    @FXML
+    private Tooltip tooltip1, tooltip2, tooltip3, tooltip4, tooltip5, tooltip6;
+    @FXML
     private Scene scene;
     @FXML
     private BorderPane mainPane;
     @FXML
     private VBox vbox;
     @FXML
-    private Button BtnBurger;
-    @FXML
-    boolean vboxVisible = true;
+    boolean vboxVisible = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        tooltip1.setShowDelay(Duration.seconds(0.5));
+        tooltip2.setShowDelay(Duration.seconds(0.5));
+        tooltip3.setShowDelay(Duration.seconds(0.5));
+        tooltip4.setShowDelay(Duration.seconds(0.5));
+        tooltip5.setShowDelay(Duration.seconds(0.5));
+        tooltip6.setShowDelay(Duration.seconds(0.5));
+        vbox.setVisible(false);
     }
 
     @FXML
@@ -81,7 +92,7 @@ public class HomeGui implements Initializable {
             slide.setToX(-70);
             slide.play();
             vbox.setTranslateX(-70);
-            slide.setOnFinished(e ->  {
+            slide.setOnFinished(e -> {
                 vbox.setVisible(false);
                 vboxVisible = false;
             });
@@ -97,6 +108,18 @@ public class HomeGui implements Initializable {
 
             });
         }
+    }
+
+    public void handleCloseBtn(ActionEvent actionEvent) {
+        Stage stage = (Stage) closeBtn.getScene().getWindow();
+        // Đóng sổ ứng dụng
+        stage.close();
+    }
+
+    @FXML
+    private void handleMinimizeBtn(ActionEvent actionEvent) {
+        Stage stage = (Stage) minimizeBtn.getScene().getWindow();
+        stage.setIconified(true);
     }
 
 

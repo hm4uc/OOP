@@ -1,4 +1,4 @@
-package deedictionaryapplication.DictionaryCommandline;
+package deedictionaryapplication.Trie;
 
 import java.util.*;
 
