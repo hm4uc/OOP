@@ -3,6 +3,7 @@ package deedictionaryapplication.Controllers;
 import deedictionaryapplication.Alert.Alerts;
 import deedictionaryapplication.DictionaryCommandline.Dictionary;
 import deedictionaryapplication.DictionaryCommandline.DictionaryManagement;
+import deedictionaryapplication.DictionaryCommandline.Word;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,9 +29,7 @@ public class SearchGui implements Initializable {
     @FXML
     private TextField searchTerm;
     @FXML
-    private Button cancelBtn;
-    @FXML
-    private Button saveBtn;
+    private Button cancelBtn, saveBtn;
     @FXML
     private Label notAvailableAlert;
     @FXML
@@ -42,7 +41,7 @@ public class SearchGui implements Initializable {
     @FXML
     private ListView<String> listResults;
     private Alerts alerts = new Alerts();
-    private Dictionary dictionary = new Dictionary();
+    private Dictionary dictionary = new Dictionary(), bookmark = new Dictionary();
     private DictionaryManagement dictionaryManagement = new DictionaryManagement();
 
     ObservableList<String> list = FXCollections.observableArrayList();
@@ -152,7 +151,6 @@ public class SearchGui implements Initializable {
     public void handleClickEditBtn(ActionEvent actionEvent) {
         explanation.setEditable(true);
         saveBtn.setVisible(true);
-        alerts.showAlertInfo("Cập nhật", "Cho phép sửa từ này!");
     }
 
     public void handleClickSaveBtn(ActionEvent actionEvent) {
@@ -167,6 +165,21 @@ public class SearchGui implements Initializable {
     }
 
     public void handleClickFavouriteBtn(ActionEvent actionEvent) {
+        Alert alertConfirmation = alerts.alertConfirmation("Yêu thích", "Bạn có chắc chắn muốn thêm từ vào mục yêu thích?");
+        Optional<ButtonType> option = alertConfirmation.showAndWait();
+        String newEnglishWord = englishWord.getText().trim();
+        String newMeaning = explanation.getText().trim();
 
+        if (bookmark.contains(new Word(newEnglishWord, newMeaning))) {
+            // Từ đã tồn tại trong danh sách yêu thích
+            Alert alertWarning = alerts.alertWarning("Yêu thích", "Từ này đã tồn tại trong danh sách yêu thích!");
+            Optional<ButtonType> option1 = alertWarning.showAndWait();
+        } else {
+            // Từ chưa tồn tại trong danh sách yêu thích
+            Word word = new Word(newEnglishWord, newMeaning);
+            dictionaryManagement.addWordInBookmark(bookmark, newEnglishWord, newMeaning);
+            alerts.showAlertInfo("Yêu thích", "Đã thêm từ vào danh sách yêu thích!");
+        }
     }
+
 }

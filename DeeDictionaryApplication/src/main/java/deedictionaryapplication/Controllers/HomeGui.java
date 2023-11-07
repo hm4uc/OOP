@@ -2,23 +2,19 @@ package deedictionaryapplication.Controllers;
 
 import deedictionaryapplication.DictionaryCommandline.DictionaryManagement;
 import javafx.animation.Interpolator;
-import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -26,7 +22,7 @@ public class HomeGui implements Initializable {
     @FXML
     private Button minimizeBtn, closeBtn, BtnBurger;
     @FXML
-    private ToggleButton HomeMenu, SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu;
+    private ToggleButton SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu;
     @FXML
     private Tooltip tooltip1, tooltip2, tooltip3, tooltip4, tooltip5, tooltip6, tooltip7;
     @FXML
@@ -36,15 +32,13 @@ public class HomeGui implements Initializable {
     @FXML
     boolean vboxVisible = true;
     private DictionaryManagement dictionaryManagement = new DictionaryManagement();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        tooltip1.setShowDelay(Duration.seconds(0.5));
-        tooltip2.setShowDelay(Duration.seconds(0.5));
-        tooltip3.setShowDelay(Duration.seconds(0.5));
-        tooltip4.setShowDelay(Duration.seconds(0.5));
-        tooltip5.setShowDelay(Duration.seconds(0.5));
-        tooltip6.setShowDelay(Duration.seconds(0.5));
-        tooltip7.setShowDelay(Duration.seconds(0.5));
+        Tooltip[] tooltips = new Tooltip[]{tooltip1, tooltip2, tooltip3, tooltip4, tooltip5, tooltip6, tooltip7};
+        for (Tooltip tooltip : tooltips) {
+            tooltip.setShowDelay(Duration.seconds(0.5));
+        }
         vbox.setVisible(false);
         BtnBurger.setVisible(false);
     }
@@ -58,81 +52,69 @@ public class HomeGui implements Initializable {
         BtnBurger.setVisible(false);
         vbox.setVisible(false);
     }
-    @FXML
-    public void handleBtnSearch(ActionEvent actionEvent) throws IOException {
-        LoaderFxml loaderFxml = new LoaderFxml();
-        Pane view = loaderFxml.getScene("SearchGui");
+
+    public void addActive(ToggleButton[] toggleButton, ToggleButton display) {
+        for (ToggleButton btn : toggleButton) {
+            btn.getStyleClass().remove("active");
+        }
+        display.getStyleClass().add("active");
+    }
+
+    private void handleMenuButtonClick(Pane view, ToggleButton menuButton) {
         mainPane.setCenter(view);
         vbox.setVisible(true);
         BtnBurger.setVisible(true);
-        for (ToggleButton btn : new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}) {
-            btn.getStyleClass().remove("active");
-        }
-        SearchMenu.getStyleClass().add("active");
+        addActive(new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}, menuButton);
     }
 
+    @FXML
+    public void handleBtnSearch(ActionEvent actionEvent) {
+        LoaderFxml loaderFxml = new LoaderFxml();
+        Pane view = loaderFxml.getScene("SearchGui");
+        handleMenuButtonClick(view, SearchMenu);
+    }
+
+    @FXML
     public void handleBtnAdd(ActionEvent actionEvent) {
         LoaderFxml loaderFxml = new LoaderFxml();
         Pane view = loaderFxml.getScene("AddGui");
-        mainPane.setCenter(view);
-        vbox.setVisible(true);
-        BtnBurger.setVisible(true);
-        for (ToggleButton btn : new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}) {
-            btn.getStyleClass().remove("active");
-        }
-        AddMenu.getStyleClass().add("active");
+        handleMenuButtonClick(view, AddMenu);
     }
 
+    @FXML
     public void handleBtnTranslate(ActionEvent actionEvent) {
         LoaderFxml loaderFxml = new LoaderFxml();
         Pane view = loaderFxml.getScene("TranslateGui");
-        mainPane.setCenter(view);
-        vbox.setVisible(true);
-        BtnBurger.setVisible(true);
-        for (ToggleButton btn : new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}) {
-            btn.getStyleClass().remove("active");
-        }
-        TranslateMenu.getStyleClass().add("active");
+        handleMenuButtonClick(view, TranslateMenu);
     }
 
+    @FXML
     public void handleBtnFavourite(ActionEvent actionEvent) {
         LoaderFxml loaderFxml = new LoaderFxml();
         Pane view = loaderFxml.getScene("FavouriteGui");
-        mainPane.setCenter(view);
-        vbox.setVisible(true);
-        BtnBurger.setVisible(true);
-        for (ToggleButton btn : new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}) {
-            btn.getStyleClass().remove("active");
-        }
-        FavouriteMenu.getStyleClass().add("active");
+        handleMenuButtonClick(view, FavouriteMenu);
     }
 
+    @FXML
     public void handleBtnHistory(ActionEvent actionEvent) {
         LoaderFxml loaderFxml = new LoaderFxml();
         Pane view = loaderFxml.getScene("HistoryGui");
-        mainPane.setCenter(view);
-        vbox.setVisible(true);
-        BtnBurger.setVisible(true);
-        for (ToggleButton btn : new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}) {
-            btn.getStyleClass().remove("active");
-        }
-        HistoryMenu.getStyleClass().add("active");
+        handleMenuButtonClick(view, HistoryMenu);
     }
 
+    @FXML
     public void handleBtnGame(ActionEvent actionEvent) {
-        vbox.setVisible(true);
-        BtnBurger.setVisible(true);
-        for (ToggleButton btn : new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}) {
-            btn.getStyleClass().remove("active");
-        }
-        GameMenu.getStyleClass().add("active");
+        LoaderFxml loaderFxml = new LoaderFxml();
+        Pane view = loaderFxml.getScene("GameGui");
+        handleMenuButtonClick(view, GameMenu);
     }
 
+    @FXML
     public void handleBtnBurger(ActionEvent actionEvent) {
         TranslateTransition slide = new TranslateTransition();
         slide.setDuration(Duration.seconds(0.5));
         slide.setNode(vbox);
-        slide.setInterpolator(Interpolator.EASE_BOTH); // Thêm dòng này
+        slide.setInterpolator(Interpolator.EASE_BOTH);
 
         if (vboxVisible) {
             // Thụt vào (slide in)
@@ -144,27 +126,25 @@ public class HomeGui implements Initializable {
                 vboxVisible = false;
             });
         } else {
-            // Thụt ra (slide out)
+            // Thò ra (slide out)
             vbox.setVisible(true);
-
             vbox.setTranslateX(-70);
             slide.setToX(0);
             slide.play();
             slide.setOnFinished(e -> {
                 vboxVisible = true;
-
             });
         }
     }
 
+    @FXML
     public void handleCloseBtn(ActionEvent actionEvent) {
         Stage stage = (Stage) closeBtn.getScene().getWindow();
-        // Đóng sổ ứng dụng
         stage.close();
     }
 
     @FXML
-    private void handleMinimizeBtn(ActionEvent actionEvent) {
+    public void handleMinimizeBtn(ActionEvent actionEvent) {
         Stage stage = (Stage) minimizeBtn.getScene().getWindow();
         stage.setIconified(true);
     }

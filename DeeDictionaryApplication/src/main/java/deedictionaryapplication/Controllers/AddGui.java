@@ -68,8 +68,6 @@ public class AddGui implements Initializable {
                         dictionary.get(indexOfWord).setWord_explain(oldMeaning + "\n= " + newMeaning);
                         dictionaryManagement.exportToFile(dictionary, DB_URL);
                         showSuccessAlert();
-                    } else {
-                        alerts.showAlertInfo("Thay đổi!", "Thay đổi không thành công.");
                     }
                 }
             } else {
