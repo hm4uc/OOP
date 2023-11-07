@@ -51,7 +51,7 @@ public class AddGui implements Initializable {
 
             if (indexOfWord >= 0) {
                 // Từ đã tồn tại
-                Alert selectionAlert = alerts.alertConfirmation("Đã tồn tại!", "Từ này đã tồn tại!\nThay thế hoặc bổ sung cho nghĩa cũ.");
+                Alert selectionAlert = alerts.alertConfirmation("Thêm từ!", "Từ này đã tồn tại!");
                 selectionAlert.getButtonTypes().clear();
                 ButtonType replaceBtn = new ButtonType("Thay thế");
                 ButtonType insertBtn = new ButtonType("Bổ sung");
