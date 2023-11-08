@@ -41,7 +41,7 @@ public class SearchGui implements Initializable {
     @FXML
     private ListView<String> listResults;
     private Alerts alerts = new Alerts();
-    private Dictionary dictionary = new Dictionary(), bookmark = new Dictionary();
+    private Dictionary dictionary = new Dictionary(), bookmark = new Dictionary(), history = new Dictionary();
     private DictionaryManagement dictionaryManagement = new DictionaryManagement();
 
     ObservableList<String> list = FXCollections.observableArrayList();
@@ -88,6 +88,7 @@ public class SearchGui implements Initializable {
         dictionaryManagement.getConnection();
         dictionaryManagement.getAllWords(dictionary);
         dictionaryManagement.getAllWordsInBookmark(bookmark);
+        dictionaryManagement.getAllWordsInHistory(history);
         dictionaryManagement.setTrie(dictionary);
         setListDefault(0);
 
@@ -127,6 +128,10 @@ public class SearchGui implements Initializable {
             if (indexOfSelectedWord == -1) return;
             englishWord.setText(dictionary.get(indexOfSelectedWord).getWord_target());
             explanation.setText(dictionary.get(indexOfSelectedWord).getWord_explain());
+
+            Word word = new Word(englishWord.getText(), explanation.getText());
+            dictionaryManagement.addWordInHistory(history, englishWord.getText(), explanation.getText());
+
             headerOfExplanation.setVisible(true);
             explanation.setVisible(true);
             explanation.setEditable(false);
@@ -166,14 +171,14 @@ public class SearchGui implements Initializable {
     }
 
     public void handleClickFavouriteBtn(ActionEvent actionEvent) {
-        Alert alertConfirmation = alerts.alertConfirmation("Yêu thích!", "Bạn có chắc chắn muốn thêm từ vào mục yêu thích?");
+        Alert alertConfirmation = alerts.alertConfirmation("Yêu thích", "Bạn có chắc chắn muốn thêm từ vào mục yêu thích?");
         Optional<ButtonType> option = alertConfirmation.showAndWait();
         String newEnglishWord = englishWord.getText();
         String newMeaning = explanation.getText();
         int indexOfWord = dictionaryManagement.searchWord(bookmark, newEnglishWord);
         if (indexOfWord >= 0) {
             // Từ đã tồn tại trong danh sách yêu thích
-            Alert alertWarning = alerts.alertWarning("Yêu thích!", "Từ này đã tồn tại trong danh sách yêu thích!");
+            Alert alertWarning = alerts.alertWarning("Yêu thích", "Từ này đã tồn tại trong danh sách yêu thích!");
             Optional<ButtonType> option1 = alertWarning.showAndWait();
         } else {
             // Từ chưa tồn tại trong danh sách yêu thích

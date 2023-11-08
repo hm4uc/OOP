@@ -40,7 +40,7 @@ public class AddGui implements Initializable {
     }
 
     public void handleClickAddBtn(ActionEvent actionEvent) {
-        Alert alertConfirmation = alerts.alertConfirmation("Thêm từ!", "Bạn có chắc chắn muốn thêm từ này?");
+        Alert alertConfirmation = alerts.alertConfirmation("Thêm từ", "Bạn có chắc chắn muốn thêm từ này?");
         Optional<ButtonType> option = alertConfirmation.showAndWait();
         String newEnglishWord = newWord.getText().trim();
         String newMeaning = newExplaination.getText().trim();
@@ -51,25 +51,10 @@ public class AddGui implements Initializable {
 
             if (indexOfWord >= 0) {
                 // Từ đã tồn tại
-                Alert selectionAlert = alerts.alertConfirmation("Thêm từ!", "Từ này đã tồn tại!");
+                Alert selectionAlert = alerts.alertWarning("Thêm từ", "Từ này đã tồn tại!");
                 selectionAlert.getButtonTypes().clear();
-                ButtonType replaceBtn = new ButtonType("Thay thế");
-                ButtonType insertBtn = new ButtonType("Bổ sung");
-                selectionAlert.getButtonTypes().addAll(replaceBtn, insertBtn, ButtonType.CANCEL);
-                Optional<ButtonType> selection = selectionAlert.showAndWait();
-
-                if (selection.isPresent()) {
-                    if (selection.get() == replaceBtn) {
-                        dictionary.get(indexOfWord).setWord_explain(newMeaning);
-                        dictionaryManagement.exportToFile(dictionary, DB_URL);
-                        showSuccessAlert();
-                    } else if (selection.get() == insertBtn) {
-                        String oldMeaning = dictionary.get(indexOfWord).getWord_explain();
-                        dictionary.get(indexOfWord).setWord_explain(oldMeaning + "\n= " + newMeaning);
-                        dictionaryManagement.exportToFile(dictionary, DB_URL);
-                        showSuccessAlert();
-                    }
-                }
+                selectionAlert.getButtonTypes().addAll(ButtonType.OK);
+                Optional<ButtonType> optional = selectionAlert.showAndWait();
             } else {
                 // Từ chưa tồn tại, thêm vào cơ sở dữ liệu
                 dictionary.add(word);

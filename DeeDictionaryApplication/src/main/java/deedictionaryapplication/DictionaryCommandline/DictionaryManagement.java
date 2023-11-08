@@ -81,6 +81,18 @@ public class DictionaryManagement {
         }
     }
 
+    public void getAllWordsInHistory(Dictionary history) {
+        final String SQLQuery = "SELECT * FROM history";
+        try (PreparedStatement ps = CONNECTION.prepareStatement(SQLQuery);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                history.add(new Word(rs.getString(2), rs.getString(3)));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public int searchWord(Dictionary dictionary, String keyWord) {
         try {
             dictionary.sort(new Comparator<Word>() {
@@ -165,6 +177,31 @@ public class DictionaryManagement {
         }
     }
 
+
+    public void deleteWordInSQL(Word word) {
+        if (word != null) {
+            try {
+                String deleteSQL = "DELETE FROM dictionary WHERE target = ?";
+                PreparedStatement preparedStatement = CONNECTION.prepareStatement(deleteSQL);
+                preparedStatement.setString(1, word.getWord_target());
+
+                int rowsAffected = preparedStatement.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Word deleted successfully from MySQL.");
+                } else {
+                    System.out.println("Failed to delete the word from MySQL.");
+                }
+
+                //CONNECTION.close();
+            } catch (SQLException e) {
+                System.out.println("SQL error: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Invalid word.");
+        }
+    }
+
     public void deleteWordFavourite(Dictionary bookmark, int index) {
         try {
             Word deletedWord = bookmark.remove(index);
@@ -197,19 +234,29 @@ public class DictionaryManagement {
             System.out.println("Invalid word.");
         }
     }
-    public void deleteWordInSQL(Word word) {
+
+    public void deleteWordHistory(Dictionary history, int index) {
+        try {
+            Word deletedWord = history.remove(index);
+            deleteWordInHistory(deletedWord);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteWordInHistory(Word word) {
         if (word != null) {
             try {
-                String deleteSQL = "DELETE FROM dictionary WHERE target = ?";
+                String deleteSQL = "DELETE FROM history WHERE target = ?";
                 PreparedStatement preparedStatement = CONNECTION.prepareStatement(deleteSQL);
                 preparedStatement.setString(1, word.getWord_target());
 
                 int rowsAffected = preparedStatement.executeUpdate();
 
                 if (rowsAffected > 0) {
-                    System.out.println("Word deleted successfully from MySQL.");
+                    System.out.println("Word remove successfully from MySQL.");
                 } else {
-                    System.out.println("Failed to delete the word from MySQL.");
+                    System.out.println("Failed to remove the word from MySQL.");
                 }
 
                 //CONNECTION.close();
@@ -220,8 +267,6 @@ public class DictionaryManagement {
             System.out.println("Invalid word.");
         }
     }
-
-
     public void addWord(Dictionary dictionary, String target, String meaning) {
         try {
             // Thêm từ mới vào cơ sở dữ liệu
@@ -259,6 +304,27 @@ public class DictionaryManagement {
             if (rowsAffected > 0) {
                 // Nếu thêm từ mới thành công, thêm nó vào từ điển và cập nhật cây trie
                 bookmark.add(new Word(target, meaning));
+                System.out.println("Word added successfully to MySQL and bookmark.");
+            } else {
+                System.out.println("Failed to add the word to MySQL.");
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL error: " + e.getMessage());
+        }
+    }
+
+    public void addWordInHistory(Dictionary history, String target, String meaning) {
+        try {
+            // Thêm từ mới vào cơ sở dữ liệu
+            String insertSQL = "INSERT INTO history (target, definition) VALUES (?, ?)";
+            PreparedStatement preparedStatement = CONNECTION.prepareStatement(insertSQL);
+            preparedStatement.setString(1, target);
+            preparedStatement.setString(2, meaning);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                history.add(new Word(target, meaning));
                 System.out.println("Word added successfully to MySQL and bookmark.");
             } else {
                 System.out.println("Failed to add the word to MySQL.");
