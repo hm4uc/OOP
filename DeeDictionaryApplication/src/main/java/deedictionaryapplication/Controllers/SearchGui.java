@@ -3,6 +3,7 @@ package deedictionaryapplication.Controllers;
 import deedictionaryapplication.Alert.Alerts;
 import deedictionaryapplication.DictionaryCommandline.Dictionary;
 import deedictionaryapplication.DictionaryCommandline.DictionaryManagement;
+import deedictionaryapplication.DictionaryCommandline.TextToSpeech;
 import deedictionaryapplication.DictionaryCommandline.Word;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,10 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
 
 import java.net.URL;
 import java.util.Optional;
@@ -43,6 +41,7 @@ public class SearchGui implements Initializable {
     private Alerts alerts = new Alerts();
     private Dictionary dictionary = new Dictionary(), bookmark = new Dictionary(), history = new Dictionary();
     private DictionaryManagement dictionaryManagement = new DictionaryManagement();
+    private TextToSpeech speech = new TextToSpeech();
 
     ObservableList<String> list = FXCollections.observableArrayList();
     private int indexOfSelectedWord;
@@ -140,7 +139,7 @@ public class SearchGui implements Initializable {
     }
 
     public void handleClickSoundBtn(ActionEvent actionEvent) {
-
+        speech.speak(dictionary.get(indexOfSelectedWord).getWord_target());
     }
 
     public void handleClickDeleteBtn(ActionEvent actionEvent) {

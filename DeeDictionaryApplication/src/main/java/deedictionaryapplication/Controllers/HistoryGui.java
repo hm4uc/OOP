@@ -3,6 +3,7 @@ package deedictionaryapplication.Controllers;
 import deedictionaryapplication.Alert.Alerts;
 import deedictionaryapplication.DictionaryCommandline.Dictionary;
 import deedictionaryapplication.DictionaryCommandline.DictionaryManagement;
+import deedictionaryapplication.DictionaryCommandline.TextToSpeech;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +37,7 @@ public class HistoryGui implements Initializable {
     private DictionaryManagement dictionaryManagement = new DictionaryManagement();
     private int indexOfSelectedWord;
     private int firstIndexOfListFound = 0;
+    private TextToSpeech speech = new TextToSpeech();
 
     private void setListDefault(int index) {
         list.clear();
@@ -85,6 +87,7 @@ public class HistoryGui implements Initializable {
     }
 
     public void handleClickSoundBtn(ActionEvent actionEvent) {
+        speech.speak(history.get(indexOfSelectedWord).getWord_target());
     }
 
     @Override

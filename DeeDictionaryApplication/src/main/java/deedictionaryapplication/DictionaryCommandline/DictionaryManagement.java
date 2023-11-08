@@ -82,7 +82,7 @@ public class DictionaryManagement {
     }
 
     public void getAllWordsInHistory(Dictionary history) {
-        final String SQLQuery = "SELECT * FROM history";
+        final String SQLQuery = "SELECT * FROM history ORDER BY target DESC";
         try (PreparedStatement ps = CONNECTION.prepareStatement(SQLQuery);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
@@ -325,7 +325,7 @@ public class DictionaryManagement {
 
             if (rowsAffected > 0) {
                 history.add(new Word(target, meaning));
-                System.out.println("Word added successfully to MySQL and bookmark.");
+                System.out.println("Word added successfully to MySQL and history.");
             } else {
                 System.out.println("Failed to add the word to MySQL.");
             }
