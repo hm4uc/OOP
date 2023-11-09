@@ -53,14 +53,12 @@ public class HistoryGui implements Initializable {
     }
 
     private void refreshAfterDelete() {
-
         for (int i = 0; i < history.size(); i++)
             if (list.get(i).equals(englishWord.getText())) {
                 list.remove(i);
                 break;
             }
         listResults.setItems(list);
-        setListDefault(0);
         explanation.setText("");
         englishWord.setText("");
     }
@@ -128,7 +126,7 @@ public class HistoryGui implements Initializable {
     }
 
     public void handleClickDeleteBtn(ActionEvent actionEvent) {
-        Alert alertWarning = alerts.alertWarning("Xóa từ", "Bạn có chắc chắn muốn xóa từ này khỏi danh sách yêu thích?");
+        Alert alertWarning = alerts.alertWarning("Xóa từ", "Bạn có chắc chắn muốn xóa từ này khỏi lịch sử?");
         alertWarning.getButtonTypes().add(ButtonType.CANCEL);
         Optional<ButtonType> option = alertWarning.showAndWait();
         if (option.get() == ButtonType.OK) {

@@ -173,20 +173,20 @@ public class SearchGui implements Initializable {
     }
 
     public void handleClickFavouriteBtn(ActionEvent actionEvent) {
-        Alert alertConfirmation = alerts.alertConfirmation("Yêu thích", "Bạn có chắc chắn muốn thêm từ vào mục yêu thích?");
+        Alert alertConfirmation = alerts.alertConfirmation("Đã lưu", "Bạn có chắc chắn muốn lưu từ này?");
         Optional<ButtonType> option = alertConfirmation.showAndWait();
         String newEnglishWord = englishWord.getText();
         String newMeaning = explanation.getText();
         int indexOfWord = dictionaryManagement.searchWord(bookmark, newEnglishWord);
         if (indexOfWord >= 0) {
             // Từ đã tồn tại trong danh sách yêu thích
-            Alert alertWarning = alerts.alertWarning("Yêu thích", "Từ này đã tồn tại trong danh sách yêu thích!");
+            Alert alertWarning = alerts.alertWarning("Đã lưu", "Từ này đã được lưu trước đó!");
             Optional<ButtonType> option1 = alertWarning.showAndWait();
         } else {
             // Từ chưa tồn tại trong danh sách yêu thích
             Word word = new Word(newEnglishWord, newMeaning);
             dictionaryManagement.addWordInBookmark(bookmark, newEnglishWord, newMeaning);
-            alerts.showAlertInfo("Yêu thích", "Đã thêm từ vào danh sách yêu thích!");
+            alerts.showAlertInfo("Đã lưu", "Từ đã được lưu!");
         }
     }
 

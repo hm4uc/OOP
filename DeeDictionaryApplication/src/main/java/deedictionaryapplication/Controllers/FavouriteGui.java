@@ -137,7 +137,7 @@ public class FavouriteGui implements Initializable {
     }
 
     public void handleClickFavouriteBtn(ActionEvent actionEvent) {
-        Alert alertWarning = alerts.alertWarning("Xóa từ", "Bạn có chắc chắn muốn xóa từ này khỏi danh sách yêu thích?");
+        Alert alertWarning = alerts.alertWarning("Xóa từ", "Bạn có chắc chắn muốn xóa từ này khỏi danh sách đã lưu?");
         alertWarning.getButtonTypes().add(ButtonType.CANCEL);
         Optional<ButtonType> option = alertWarning.showAndWait();
         if (option.get() == ButtonType.OK) {
