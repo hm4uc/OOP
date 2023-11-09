@@ -82,7 +82,7 @@ public class DictionaryManagement {
     }
 
     public void getAllWordsInHistory(Dictionary history) {
-        final String SQLQuery = "SELECT * FROM history ORDER BY target DESC";
+        final String SQLQuery = "SELECT * FROM history";
         try (PreparedStatement ps = CONNECTION.prepareStatement(SQLQuery);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {

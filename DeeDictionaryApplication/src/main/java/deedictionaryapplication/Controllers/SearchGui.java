@@ -64,6 +64,8 @@ public class SearchGui implements Initializable {
         listResults.setItems(list);
         headerOfExplanation.setVisible(false);
         explanation.setVisible(false);
+        explanation.setText("");
+        englishWord.setText("");
     }
 
     @FXML
@@ -84,7 +86,6 @@ public class SearchGui implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dictionaryManagement.getConnection();
         dictionaryManagement.getAllWords(dictionary);
         dictionaryManagement.getAllWordsInBookmark(bookmark);
         dictionaryManagement.getAllWordsInHistory(history);
@@ -127,10 +128,11 @@ public class SearchGui implements Initializable {
             if (indexOfSelectedWord == -1) return;
             englishWord.setText(dictionary.get(indexOfSelectedWord).getWord_target());
             explanation.setText(dictionary.get(indexOfSelectedWord).getWord_explain());
-
-            Word word = new Word(englishWord.getText(), explanation.getText());
+            int indexOfWord = dictionaryManagement.searchWord(history, englishWord.getText());
+            if (indexOfWord >= 0) {
+                dictionaryManagement.deleteWordHistory(history, indexOfWord);
+            }
             dictionaryManagement.addWordInHistory(history, englishWord.getText(), explanation.getText());
-
             headerOfExplanation.setVisible(true);
             explanation.setVisible(true);
             explanation.setEditable(false);
@@ -148,6 +150,7 @@ public class SearchGui implements Initializable {
         Optional<ButtonType> option = alertWarning.showAndWait();
         if (option.get() == ButtonType.OK) {
             dictionaryManagement.deleteWord(dictionary, indexOfSelectedWord);
+            dictionaryManagement.deleteWordFavourite(bookmark, indexOfSelectedWord);
             refreshAfterDelete();
             alerts.showAlertInfo("Xóa từ", "Xóa thành công!");
         }

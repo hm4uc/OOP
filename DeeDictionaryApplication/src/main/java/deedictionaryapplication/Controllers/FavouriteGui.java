@@ -41,14 +41,14 @@ public class FavouriteGui implements Initializable {
 
     private void setListDefault(int index) {
         list.clear();
-        for (int i = index; i < bookmark.size(); i++) list.add(bookmark.get(i).getWord_target());
+        for (int i = bookmark.size() - 1; i >= index; i--) list.add(bookmark.get(i).getWord_target());
         listResults.setItems(list);
         if (bookmark.size() > 0) {
             englishWord.setText(bookmark.get(index).getWord_target());
             explanation.setText(bookmark.get(index).getWord_explain());
         } else {
             englishWord.setText(""); // Xóa văn bản nếu danh sách trống
-            explanation.clear();
+            explanation.setText("");
         }
     }
 
@@ -59,7 +59,9 @@ public class FavouriteGui implements Initializable {
                 break;
             }
         listResults.setItems(list);
-        explanation.setVisible(false);
+        setListDefault(0);
+        explanation.setText("");
+        englishWord.setText("");
     }
 
     @FXML
@@ -79,7 +81,7 @@ public class FavouriteGui implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dictionaryManagement.getConnection();
+        //dictionaryManagement.getConnection();
         dictionaryManagement.getAllWordsInBookmark(bookmark);
         dictionaryManagement.setTrie(bookmark);
         setListDefault(0);

@@ -41,24 +41,28 @@ public class HistoryGui implements Initializable {
 
     private void setListDefault(int index) {
         list.clear();
-        for (int i = index; i < history.size(); i++) list.add(history.get(i).getWord_target());
+        for (int i = history.size() - 1; i >= index; i--) list.add(history.get(i).getWord_target());
         listResults.setItems(list);
         if (history.size() > 0) {
             englishWord.setText(history.get(index).getWord_target());
             explanation.setText(history.get(index).getWord_explain());
         } else {
             englishWord.setText(""); // Xóa văn bản nếu danh sách trống
-            explanation.clear();
+            explanation.setText("");
         }
     }
 
     private void refreshAfterDelete() {
-        for (int i = 0; i < list.size(); i++)
+
+        for (int i = 0; i < history.size(); i++)
             if (list.get(i).equals(englishWord.getText())) {
                 list.remove(i);
                 break;
             }
         listResults.setItems(list);
+        setListDefault(0);
+        explanation.setText("");
+        englishWord.setText("");
     }
 
     @FXML
@@ -92,7 +96,7 @@ public class HistoryGui implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        dictionaryManagement.getConnection();
+        //dictionaryManagement.getConnection();
         dictionaryManagement.getAllWordsInHistory(history);
         dictionaryManagement.setTrie(history);
         setListDefault(0);
@@ -129,8 +133,8 @@ public class HistoryGui implements Initializable {
         Optional<ButtonType> option = alertWarning.showAndWait();
         if (option.get() == ButtonType.OK) {
             dictionaryManagement.deleteWordHistory(history, indexOfSelectedWord);
-            refreshAfterDelete();
             alerts.showAlertInfo("Xóa từ", "Xóa thành công!");
+            refreshAfterDelete();
         }
     }
 }

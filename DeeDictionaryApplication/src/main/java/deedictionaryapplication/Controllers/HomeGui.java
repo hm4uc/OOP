@@ -1,5 +1,6 @@
 package deedictionaryapplication.Controllers;
 
+import deedictionaryapplication.DictionaryCommandline.Dictionary;
 import deedictionaryapplication.DictionaryCommandline.DictionaryManagement;
 import javafx.animation.Interpolator;
 import javafx.animation.TranslateTransition;
@@ -7,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +22,8 @@ import java.util.ResourceBundle;
 
 public class HomeGui implements Initializable {
     @FXML
+    private Label topPane;
+    @FXML
     private Button minimizeBtn, closeBtn, BtnBurger;
     @FXML
     private ToggleButton SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu;
@@ -32,6 +36,7 @@ public class HomeGui implements Initializable {
     @FXML
     boolean vboxVisible = true;
     private DictionaryManagement dictionaryManagement = new DictionaryManagement();
+    private Dictionary dictionary, bookmark, history = new Dictionary();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -41,6 +46,9 @@ public class HomeGui implements Initializable {
         }
         vbox.setVisible(false);
         BtnBurger.setVisible(false);
+        topPane.setVisible(false);
+
+        dictionaryManagement.getConnection();
     }
 
     public void handleBtnHome(ActionEvent actionEvent) {
@@ -64,6 +72,7 @@ public class HomeGui implements Initializable {
         mainPane.setCenter(view);
         vbox.setVisible(true);
         BtnBurger.setVisible(true);
+        topPane.setVisible(true);
         addActive(new ToggleButton[]{SearchMenu, AddMenu, TranslateMenu, FavouriteMenu, HistoryMenu, GameMenu}, menuButton);
     }
 

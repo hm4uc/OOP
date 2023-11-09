@@ -35,7 +35,7 @@
          <children>
             <Pane layoutY="51.0" prefHeight="35.0" prefWidth="450.0" stylesheets="@../Style.css" AnchorPane.bottomAnchor="254.0">
                <children>
-                  <Label fx:id="englishWord" layoutX="14.0" layoutY="5.0" prefHeight="30.0" prefWidth="198.0" text="Word" textFill="#073874">
+                  <Label fx:id="englishWord" layoutX="14.0" layoutY="5.0" prefHeight="30.0" prefWidth="336.0" text="Word" textFill="#073874">
                      <font>
                         <Font name="System Bold" size="20.0" />
                      </font>
