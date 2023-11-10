@@ -24,7 +24,7 @@ public class FavouriteGui implements Initializable {
     @FXML
     private Label englishWord;
     @FXML
-    private Button volumeBtn, cancelBtn, saveBtn;
+    private Button cancelBtn, saveBtn;
     @FXML
     private TextArea explanation;
     @FXML

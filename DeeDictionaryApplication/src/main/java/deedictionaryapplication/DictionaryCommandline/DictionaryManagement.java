@@ -1,8 +1,6 @@
 package deedictionaryapplication.DictionaryCommandline;
 
-import deedictionaryapplication.DictionaryCommandline.Dictionary;
 import deedictionaryapplication.Trie.Trie;
-import deedictionaryapplication.DictionaryCommandline.Word;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
